@@ -1,0 +1,8 @@
+mitsuba-results
+pbrt-results
+blender-results
+
+mitsuba-viewers
+pbrt-viewers
+blender-viewers
+__pycache__
