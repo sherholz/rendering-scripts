@@ -11,7 +11,7 @@ class BlenderRenderer:
 
         make_safe_dir(self.results_dir)
     
-    def runTestCase(self, scene, scene_variant, resolution, test_case, spp = 64, stats = False, usedGuidedGBuffer = False):
+    def runTestCase(self, scene, scene_variant, resolution, test_case, spp = 64, deleteTestCaseJSON=True):
         make_safe_dir(self.results_dir + "/" + scene + scene_variant)
 
         outFile = self.results_dir + "/" + scene + scene_variant + "/" + scene + scene_variant + "-" + test_case.name + ".exr"
@@ -50,7 +50,7 @@ class BlenderRenderer:
         print(command)
         os.system(command)
         
-        if os.path.isfile(testCaseFile):
+        if deleteTestCaseJSON and os.path.isfile(testCaseFile):
             os.remove(testCaseFile)
         
     """

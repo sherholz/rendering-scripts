@@ -5,4 +5,9 @@ blender-results
 mitsuba-viewers
 pbrt-viewers
 blender-viewers
+
+mitsuba-scenes
+pbrt-scenes
+blender-scenes
+
 __pycache__
