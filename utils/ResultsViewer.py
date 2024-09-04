@@ -36,8 +36,9 @@ class ResultsViewer:
         numLayers = len(layers)
         numErrors = len(errors)
 
-        for scene, scene_variants, resolution in scenes:
-
+        for scenedata in scenes:
+            scene = scenedata[0]
+            scene_variants = scenedata[1]
             for variant in scene_variants:
                 scene_variant_dir = viewer_output_dir + "/"+ scene
                 if variant != "":
