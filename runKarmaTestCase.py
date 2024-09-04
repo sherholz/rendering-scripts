@@ -18,8 +18,6 @@ testCaseDescription = TestCaseHelper.loadTestCaseDescription("examples/karma/tes
 # Loading the scenes to run the test cases (e.g., usdhydra-scenes can be a folder or a soft link to it)
 [scenes, scenes_dir] = SceneHelper.loadScenes("usdhydra-scenes/scenesconfig") 
 
-print("scenes_dir ",scenes_dir)
-scenes_dir = "/home/sherholz/Develop-Arnold/openpgl-scripts/usdhydra-scenes/"
 # Setup the Hydra renderer
 karma = KarmaRenderer.KarmaRenderer(houdini_dir, results_dir, scenes_dir)
 
