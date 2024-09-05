@@ -1,7 +1,7 @@
 test_case_description = {
-    "title" : "Guiding tests in Blender/Cycles",
-    "short" : "Comparing path tracing with and without path guiding using Blender's Cycles renderer.",
-    "long" : "This test compares ."
+    "title" : "Blender's Cycles Path Guiding Test",
+    "short" : "Comparing path tracing with and without path guiding and with and without LBVH enabled using Blender's Cycles renderer.",
+    "long" : "In this (equal-spp) test, Karma is set up to generate unbiased, path traced rendering results (no direct and indirect light clamping, caustics enable, long diffuse and glossy bounces), with and without path guiding and LBVH enabled."
 }
 common_parameters = {
     "render.engine" : 'CYCLES',

@@ -1,7 +1,7 @@
 test_case_description = {
-    "title" : "Guiding tests in PBRT",
-    "short" : "Comparing path tracing with and without path guiding using PBRT's guided integrator.",
-    "long" : "This test compares ."
+    "title" : "Karma Path Guiding Test",
+    "short" : "Comparing path tracing with and without path guiding using SideFX's Karma renderer.",
+    "long" : "In this (equal-spp) test, Karma is set up to generate unbiased, path traced rendering results (no colorlimits, caustics enabled, long diffuse, refract, and refract limits), without and with path guiding enabled."
 }
 
 common_parameters = {
@@ -35,7 +35,7 @@ test_cases = {
             "karma:global:guiding_enable" : ["bool", False],
             "karma:global:guiding_samples" : ["int", 0],
         },
-        "description" : "Standard Path tracer",
+        "description" : "Standard umbiased path tracer",
     },
 
     "pt-surfaceguiding" : {
@@ -43,6 +43,6 @@ test_cases = {
             "karma:global:guiding_enable" : ["bool", True],
             "karma:global:guiding_samples" : ["int", 0],
         },
-        "description" : "Standard Path tracer",
+        "description" : "Surface guided unbiased path tracer",
     },
 }
