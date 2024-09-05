@@ -1,5 +1,6 @@
 import os
 import copy
+import json
 import pathlib
 
 class KarmaRenderer:
@@ -26,13 +27,14 @@ class KarmaRenderer:
                     print(value)
                     print(parameters[parameter])
 
-        if not parameters.__contains__("sampleCount"):
-            parameters["sampleCount"] = spp
-        if not parameters.__contains__("maxComponentValue") and max_component_value > 0:
-            parameters["maxComponentValue"] = max_component_value
+        #if not parameters.__contains__("karma:global:samplesperpixel"):
+        #    parameters["karma:global:samplesperpixel"] = ["int",spp]
         
-        parameters["width"] = resolution[0]
-        parameters["height"] = resolution[1]
+
+        testCaseFile = self.results_dir + "/" + scene + scene_variant + "/" + scene + scene_variant + "-" + test_case.name + ".json"
+        with open(testCaseFile, 'w') as f:
+            json.dump(parameters, f, indent=4)
+        
         sceneFileName = self.scenes_dir + scene +"/" + scene + scene_variant + ".usd"
 
         outFile = self.results_dir + "/" + scene + scene_variant + "/" + scene + scene_variant + "-" + test_case.name + ".exr"
@@ -42,14 +44,14 @@ class KarmaRenderer:
         command += "source houdini_setup_bash \n "
         command += "cd " + str(currentFolder) + " \n "
         command += "husk"
-        command += " --prerender-script " + "'" + str(scriptFolder) + "/script.py'"
+        command += " --prerender-script " + "'" + str(scriptFolder) + "/RunKarmaTestCase.py " + testCaseFile +"'"
         command += " " + sceneFileName
 
         if self.use_xpu:
             command += " --engine " + "xpu"
         else:
             command += " --engine " + "cpu"
-        command += " --convergence-mode " + "pathtraced"
+        #command += " --convergence-mode " + "pathtraced"
         command += " --pixel-samples " + str(spp)
         command += " --camera " + camera + " "
         command += " -o " + str(outFile)
