@@ -21,7 +21,7 @@ PYTHONPATH=$PYTHONPATH:$PWD python3 ./examples/mitsuba/runMitsubaReferenceTestCa
 PYTHONPATH=$PYTHONPATH:$PWD python3 ./examples/pbrt/runPBRTSurfaceGuidingTestCase.py
 ```
 
-## SideFX Blender
+## Blender Cycles
 
 ``` bash
 PYTHONPATH=$PYTHONPATH:$PWD python3 ./examples/blender/runBlenderGuidingTestCase.py

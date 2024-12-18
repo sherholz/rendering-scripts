@@ -7,9 +7,9 @@ import utils.ResultsViewer as ResultsViewer
 # name of the Hydra delegate
 houdini_dir = "/opt/hfs20.5/"
 # path to store the results
-results_dir = "./karma-results/guiding2"
+results_dir = "./karma-results/guiding"
 # path to store the post-processed results and the HTML viewer
-viewer_output_dir = "./karma-viewers/guiding2"
+viewer_output_dir = "./karma-viewers/guiding"
 
 # Loading the test case descriptions from a file
 testCases = TestCaseHelper.loadTestCases("examples/karma/testcases/guiding")
@@ -27,7 +27,7 @@ for scene, scene_variants, resolution, camera in scenes:
     for variant in scene_variants:
         #run each test case defined in the test cases file
         for testCase in testCases:    
-            karma.runTestCase(scene, variant, resolution, camera, testCase, spp = 1)
+            karma.runTestCase(scene, variant, resolution, camera, testCase, spp = 32)
 
 #after running all test cases for all scenes prepare the results in an interactive HTML viewer 
 viewer = ResultsViewer.ResultsViewer("./utils/webviewer")
