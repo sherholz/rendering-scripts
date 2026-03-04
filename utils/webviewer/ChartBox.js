@@ -66,7 +66,7 @@ var ChartBox = function(parent, stats) {
     h1.appendChild(document.createTextNode("Charts"));
 
     var help = document.createElement('p');
-    help.appendChild(document.createTextNode("Relative error, obtained by dividing the reconstruction error by the default path traced rendering error. Results are shown for renderings with a low and a high sampling rate. For all metrics, lower values are better."));
+    help.appendChild(document.createTextNode(" Error values using different metrics. For all metrics, lower values are better."));
     help.className = "help";
 
     var box = document.createElement("div");
@@ -104,7 +104,7 @@ var ChartBox = function(parent, stats) {
     for (var i = 0; i < stats.length; ++i) {
 
         var data = [];
-        data['labels'] = stats[i]['labels'].slice(1,stats[i]['labels'].length);
+        data['labels'] = stats[i]['labels'].slice(0,stats[i]['labels'].length);
         data['datasets'] = [];
 
         var brightColor = [155,210,255];
@@ -114,7 +114,7 @@ var ChartBox = function(parent, stats) {
             data['datasets'][j] = {}
             values = stats[i]['series'][j]['data'].slice(0);
             for (var k = 0; k < values.length; ++k) {
-                values[k] = values[k] / stats[i]['series'][j]['data'][0];
+                values[k] = values[k];
             }
 
             var alpha = stats[i]['series'].length > 1 ? j / (stats[i]['series'].length-1) : 1;
@@ -124,7 +124,7 @@ var ChartBox = function(parent, stats) {
             var colorString = "rgba("+Math.round(color[0])+","+Math.round(color[1])+","+Math.round(color[2])+",0.8)";
 
             data['datasets'][j]['label'] = stats[i]['series'][j]['label'];
-            data['datasets'][j]['data'] = values.slice(1,values.length);
+            data['datasets'][j]['data'] = values.slice(0,values.length);
             data['datasets'][j]['fillColor'] = colorString;
             data['datasets'][j]['strokeColor'] = colorString;
             data['datasets'][j]['highlightFill'] = colorString;
