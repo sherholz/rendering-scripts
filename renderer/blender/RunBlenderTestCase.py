@@ -7,17 +7,52 @@ import pathlib
 import sys
 import json
 
-def disableRenderLayers(view_layer):
-	#print(scene.view_layer)
-	#help(scene.view_layers)
-	if(hasattr(view_layer, "use_pass_combined")):
-		setattr(view_layer, "use_pass_combined", True)	
-		
-	layerList = ['z','mist','position','normal','vector','uv','object_index','debug_sample_count','diffuse_direct','diffuse_indirect','diffuse_color','glossy_direct','glossy_indirect','glossy_color','transmission_direct','transmission_indirect','transmission_color','volume_direct','volume_indirect','emit','environment','shadow','shadow_catcher','ambient_occlusion','subsurface_color','subsurface_direct','subsurface_indirect']
+def disableRenderLayers(view_layer, visible_layers=["combined"]):
+    layerList = [
+        'z',
+        'mist',
+        'position',
+        'normal',
+        'vector',
+        'uv',
+        'object_index',
+        'debug_sample_count',
+        'diffuse_direct',
+        'diffuse_indirect',
+        'diffuse_color',
+        'glossy_direct',
+        'glossy_indirect',
+        'glossy_color',
+        'transmission_direct',
+        'transmission_indirect',
+        'transmission_color',
+        'volume_direct',
+        'volume_indirect',
+        'emit',
+        'environment',
+        'shadow',
+        'shadow_catcher',
+        'ambient_occlusion',
+        'subsurface_color',
+        'subsurface_direct',
+        'subsurface_indirect',
+        ]
 
-	for layer in layerList:
-		if(hasattr(view_layer, "use_pass_"+layer)):
-			setattr(view_layer, "use_pass_"+layer, False)	
+    for layer in layerList:
+        if(hasattr(view_layer, "use_pass_"+layer)):
+            setattr(view_layer, "use_pass_"+layer, False)
+    if(hasattr(view_layer.cycles, "denoising_store_passes")):
+        setattr(view_layer.cycles, "denoising_store_passes", False)	
+
+    view_layer.name = "Cycles"
+    for layer in visible_layers:
+        print()
+        if layer == "denoising_store_passes":
+            if(hasattr(view_layer.cycles, "denoising_store_passes")):
+                setattr(view_layer.cycles, "denoising_store_passes", True)
+        else:
+            if(hasattr(view_layer, "use_pass_"+layer)):
+                setattr(view_layer, "use_pass_"+layer, True)	
 
 class ArgumentParserForBlender(argparse.ArgumentParser):
     """
@@ -73,11 +108,16 @@ testcase_parameters = json.load(f)
 import bpy
 
 scene = bpy.context.scene
+
+visible_layers=testcase_parameters["visible_layers"]
 scene.render.image_settings.file_format = 'OPEN_EXR'
-#scene.render.image_settings.file_format = 'OPEN_EXR_MULTILAYER'
+if len(visible_layers) > 0:
+    scene.render.image_settings.media_type = 'MULTI_LAYER_IMAGE'
+else:
+    scene.render.image_settings.media_type = 'IMAGE'
 
 view_layer = bpy.context.view_layer
-disableRenderLayers(view_layer)
+disableRenderLayers(view_layer, visible_layers)
 
 scene.use_nodes = False
 

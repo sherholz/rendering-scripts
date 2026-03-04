@@ -11,7 +11,7 @@ class BlenderRenderer:
 
         make_safe_dir(self.results_dir)
     
-    def runTestCase(self, scene, scene_variant, resolution, test_case, spp = 64, deleteTestCaseJSON=True):
+    def runTestCase(self, scene, scene_variant, resolution, test_case, spp = 64, deleteTestCaseJSON=True, renderLayers=["combined"]):
         make_safe_dir(self.results_dir + "/" + scene + scene_variant)
 
         outFile = self.results_dir + "/" + scene + scene_variant + "/" + scene + scene_variant + "-" + test_case.name + ".exr"
@@ -31,9 +31,10 @@ class BlenderRenderer:
         parameters["render.resolution_x"] = resolution[0]
         parameters["render.resolution_y"] = resolution[1]
 
-        parameters["cycles.samples"] = spp
-        #parameters["cycles.time_limit"] = resolution[1]
+        if not parameters.__contains__("cycles.samples"):
+            parameters["cycles.samples"] = spp
 
+        parameters["visible_layers"] = renderLayers
         testCaseFile = self.results_dir + "/" + scene + scene_variant + "/" + scene + scene_variant + "-" + test_case.name + ".json"
         with open(testCaseFile, 'w') as f:
             json.dump(parameters, f, indent=4)
@@ -66,6 +67,25 @@ class BlenderRenderer:
         print(command)
         os.system(command)
     """
+
+    def getRenderLayerNames(self, render_layers):
+        prefix = "Cycles"
+        render_layer_names = []
+        for layer in render_layers:
+            if layer == "denoising_store_passes":
+                render_layer_names.append(prefix + "." + "Denoising Albedo")
+                render_layer_names.append(prefix + "." + "Denoising Depth")
+                render_layer_names.append(prefix + "." + "Denoising Roughness")
+                render_layer_names.append(prefix + "." + "Denoising Specular Albedo")
+            elif layer == "combined":
+                render_layer_names.append(prefix + "." + "Combined")
+            elif layer == "diffuse_color":
+                render_layer_names.append(prefix + "." + "Diffuse Color")
+            elif layer == "glossy_color":
+                render_layer_names.append(prefix + "." + "Glossy Color")
+        # TODO: Need to add other AOV naming transitions 
+        return render_layer_names
+
 def make_safe_dir(folderName):
     if not os.path.exists(folderName):
         os.makedirs(folderName)
