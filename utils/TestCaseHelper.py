@@ -5,9 +5,15 @@ class TestCase:
         self.name = name
         self.parameters = mergeParameters(common_parameters, data["parameters"])
         self.description = data["description"]
+        self.label = name
+        if data.__contains__("label"):
+            self.label = data["label"]
         self.skipViewer = False
         if data.__contains__("skipViewer"):
             self.skipViewer = data["skipViewer"]
+        self.skipErrorStats = False
+        if data.__contains__("skipErrorStats"):
+            self.skipErrorStats = data["skipErrorStats"]
 
 def loadTestCases(test_cases):
     testCases = []
@@ -23,6 +29,11 @@ def loadTestCaseDescription(test_cases):
     sys.path.append(os.path.dirname(test_cases))
     tcs = importlib.import_module(os.path.basename(test_cases))
     return tcs.test_case_description
+
+def loadTestCasesAndDescriptions(test_cases):
+    testCases = loadTestCases(test_cases)
+    description = loadTestCaseDescription(test_cases)
+    return [testCases, description]
 
 def mergeParameters(common_parameters, test_case_parameters):
     parameters = test_case_parameters
