@@ -7,7 +7,7 @@ import pathlib
 import sys
 import json
 
-def disableRenderLayers(view_layer, visible_layers=["combined"]):
+def disableRenderLayers(view_layer, visible_layers=[]):
     layerList = [
         'z',
         'mist',
@@ -45,14 +45,20 @@ def disableRenderLayers(view_layer, visible_layers=["combined"]):
         setattr(view_layer.cycles, "denoising_store_passes", False)	
 
     view_layer.name = "Cycles"
-    for layer in visible_layers:
-        print()
-        if layer == "denoising_store_passes":
-            if(hasattr(view_layer.cycles, "denoising_store_passes")):
-                setattr(view_layer.cycles, "denoising_store_passes", True)
-        else:
-            if(hasattr(view_layer, "use_pass_"+layer)):
-                setattr(view_layer, "use_pass_"+layer, True)	
+
+    if len(visible_layers) == 0:
+        if(hasattr(view_layer, "use_pass_"+ "combined")):
+            setattr(view_layer, "use_pass_"+ "combined", True)	
+
+    else:
+        for layer in visible_layers:
+            print()
+            if layer == "denoising_store_passes":
+                if(hasattr(view_layer.cycles, "denoising_store_passes")):
+                    setattr(view_layer.cycles, "denoising_store_passes", True)
+            else:
+                if(hasattr(view_layer, "use_pass_"+layer)):
+                    setattr(view_layer, "use_pass_"+layer, True)	
 
 class ArgumentParserForBlender(argparse.ArgumentParser):
     """

@@ -11,7 +11,7 @@ class BlenderRenderer:
 
         make_safe_dir(self.results_dir)
     
-    def runTestCase(self, scene, scene_variant, resolution, test_case, spp = 64, deleteTestCaseJSON=True, renderLayers=["combined"]):
+    def runTestCase(self, scene, scene_variant, resolution, test_case, spp = 64, deleteTestCaseJSON=True, renderLayers=[]):
         make_safe_dir(self.results_dir + "/" + scene + scene_variant)
 
         outFile = self.results_dir + "/" + scene + scene_variant + "/" + scene + scene_variant + "-" + test_case.name + ".exr"
@@ -75,8 +75,9 @@ class BlenderRenderer:
             if layer == "denoising_store_passes":
                 render_layer_names.append(prefix + "." + "Denoising Albedo")
                 render_layer_names.append(prefix + "." + "Denoising Depth")
-                render_layer_names.append(prefix + "." + "Denoising Roughness")
-                render_layer_names.append(prefix + "." + "Denoising Specular Albedo")
+                render_layer_names.append(prefix + "." + "Denoising Normal")
+                #render_layer_names.append(prefix + "." + "Denoising Roughness")
+                #render_layer_names.append(prefix + "." + "Denoising Specular Albedo")
             elif layer == "combined":
                 render_layer_names.append(prefix + "." + "Combined")
             elif layer == "diffuse_color":
