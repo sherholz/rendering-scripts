@@ -3,6 +3,7 @@ import utils.TestCaseHelper as TestCaseHelper
 import utils.SceneHelper as SceneHelper
 
 import utils.ResultsViewer as ResultsViewer
+import utils.OpenPGLStatisticPlotter as OpenPGLStatisticPlotter
 
 # path to the PBRT installation (e.g., folder or a soft link to it)
 pbrt_dir = "./pbrt-renderer-v071/"
@@ -10,6 +11,8 @@ pbrt_dir = "./pbrt-renderer-v071/"
 results_dir = "./pbrt-results/surfaceguiding"
 # path to store the post-processed results and the HTML viewer
 viewer_output_dir = "./pbrt-viewers/surfaceguiding"
+
+statistics = ["numCacheRegions ","averageNumberOfComponents "]
 
 # Loading the test case descriptions from a file
 testCases = TestCaseHelper.loadTestCases("testcases/surfaceguidingfull")
@@ -29,6 +32,9 @@ for scene, scene_variants, resolution in scenes:
             pass    
             #pbrt.runTestCase(scene, variant, resolution, testCase, spp = 64, stats = True, usedGuidedGBuffer = False)
 
+
+statsPlotter = OpenPGLStatisticPlotter.OpenPGLStatisticPlotter()
+statsPlotter.plotStatistics(results_dir, scenes, testCases, statistics)
 #after running all test cases for all scenes prepare the results in an interactive HTML viewer 
 viewer = ResultsViewer.ResultsViewer("./utils/webviewer")
 viewer.generateHTMLS(viewer_output_dir, results_dir, scenes_dir, scenes, testCaseDescription, testCases, showReference=False, perScene=False)

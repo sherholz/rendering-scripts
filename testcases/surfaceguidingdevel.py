@@ -10,6 +10,7 @@ common_parameters = {
     "minrrdepth" : ["integer", 5],
     "usenee" : ["bool", True],
     "enableguiding" : ["bool", False],
+    "logstatistics" : ["bool", True],
 }
 
 test_cases = {
