@@ -1,4 +1,5 @@
 import os
+import platform
 import copy
 
 class PBRTRenderer:
@@ -6,10 +7,18 @@ class PBRTRenderer:
         self.pbrt_install_dir = pbrt_install_dir
         self.results_dir = results_dir
         self.scenes_dir = scenes_dir
-
-        os.environ['LD_LIBRARY_PATH'] = os.environ['LD_LIBRARY_PATH'] + ":" + self.pbrt_install_dir +"lib"
-        os.environ['PATH'] = os.environ['PATH'] + ":" + self.pbrt_install_dir +"bin"
-
+        if platform.system() == "Linux":
+            if os.environ.__contains__('LD_LIBRARY_PATH'):
+                os.environ['LD_LIBRARY_PATH'] = os.environ['LD_LIBRARY_PATH'] + ":" + self.pbrt_install_dir +"lib"
+            else:
+                os.environ['LD_LIBRARY_PATH'] = self.pbrt_install_dir +"lib"
+            os.environ['PATH'] = os.environ['PATH'] + ":" + self.pbrt_install_dir +"bin"
+        elif platform.system() == "Darwin":
+            if os.environ.__contains__('DYLD_LIBRARY_PATH'):
+                os.environ['DYLD_LIBRARY_PATH'] = os.environ['DYLD_LIBRARY_PATH'] + ":" + self.pbrt_install_dir +"lib"
+            else:
+                os.environ['DYLD_LIBRARY_PATH'] = self.pbrt_install_dir +"lib"
+            os.environ['PATH'] = os.environ['PATH'] + ":" + self.pbrt_install_dir +"bin"
         make_safe_dir(self.results_dir)
 
     def runTestCase(self, scene, scene_variant, resolution, test_case, spp = 64, stats = False, usedGuidedGBuffer = False):
